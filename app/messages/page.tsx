@@ -3,19 +3,21 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
-import { Network, Code, Users, MessageSquare, Settings, Search, LogOut, Send, Phone, Video, Info } from "lucide-react"
+import { Network, Code, Users, MessageSquare, Settings, Search, LogOut, Send, Phone, Video, Info, Terminal } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { useRouter } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
+import { CopilotModal } from "@/components/copilot-modal"
 
 export default function MessagesPage() {
   const router = useRouter()
   const [activeChat, setActiveChat] = useState("chat-1")
   const [message, setMessage] = useState("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const [isCopilotOpen, setIsCopilotOpen] = useState(false)
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -158,6 +160,13 @@ export default function MessagesPage() {
                 <Settings className="h-5 w-5" />
                 <span>Settings</span>
               </Link>
+              <button
+                onClick={() => setIsCopilotOpen(true)}
+                className="flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 w-full text-left"
+              >
+                <Terminal className="h-5 w-5" />
+                <span>Copilot</span>
+              </button>
             </nav>
 
             <div className="pt-4 border-t border-gray-200">
@@ -301,6 +310,11 @@ export default function MessagesPage() {
           </form>
         </div>
       </div>
+
+      <CopilotModal 
+        isOpen={isCopilotOpen}
+        onClose={() => setIsCopilotOpen(false)}
+      />
     </div>
   )
 }

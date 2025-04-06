@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
 import { motion } from "framer-motion"
-import { Network, Play, Save, Share, ChevronLeft, ChevronRight, X, Menu, PanelLeft, PanelRight } from "lucide-react"
+import { Network, Play, Save, Share, ChevronLeft, ChevronRight, X, Menu, PanelLeft, PanelRight, Code, Users, MessageSquare, Settings, Terminal } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
 import Editor from "@monaco-editor/react"
+import { CopilotModal } from "@/components/copilot-modal"
 
 interface EditorPageProps {
   params: {
@@ -38,6 +39,7 @@ sayHi();`)
     { name: "Alex", color: "blue" },
     { name: "Sarah", color: "purple" },
   ])
+  const [isCopilotOpen, setIsCopilotOpen] = useState(false)
 
   const router = useRouter()
   const chatEndRef = useRef<HTMLDivElement>(null)
@@ -223,6 +225,13 @@ sayHi();`)
                       <div className="w-2 h-2 rounded-full bg-purple-400 mr-2"></div>
                       index.html
                     </div>
+                    <button
+                      onClick={() => setIsCopilotOpen(true)}
+                      className="w-full px-2 py-1.5 rounded text-gray-600 hover:bg-gray-100 hover:text-gray-900 cursor-pointer flex items-center"
+                    >
+                      <Terminal className="h-4 w-4 mr-2" />
+                      Copilot
+                    </button>
                   </div>
                 </div>
               </TabsContent>
@@ -354,6 +363,11 @@ sayHi();`)
           </motion.aside>
         )}
       </div>
+
+      <CopilotModal 
+        isOpen={isCopilotOpen}
+        onClose={() => setIsCopilotOpen(false)}
+      />
     </div>
   )
 }
